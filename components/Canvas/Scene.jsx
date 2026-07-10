@@ -16,8 +16,8 @@ export default function Scene({ formInteracted, setFormInteracted }) {
     <div className="fixed inset-0 -z-10 pointer-events-none">
       <Canvas 
         camera={{ position: [0, 0, isMobile ? 12 : 8], fov: isMobile ? 60 : 45 }} 
-        gl={{ antialias: true, alpha: true }}
-        dpr={[1, 1.5]}
+        gl={{ antialias: !isMobile, alpha: true }}
+        dpr={isMobile ? [1, 1] : [1, 1.5]}
       >
         <NodeNetwork formInteracted={formInteracted} setFormInteracted={setFormInteracted} isMobile={isMobile} />
       </Canvas>

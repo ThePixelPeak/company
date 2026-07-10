@@ -34,7 +34,7 @@ export default function Contact({ setFormInteracted }) {
   }
 
   return (
-    <section className="section-container min-h-screen py-16 md:py-32" id="contact">
+    <section className="section-container min-h-screen py-8 md:py-32" id="contact">
       <motion.div 
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}

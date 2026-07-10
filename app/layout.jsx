@@ -18,7 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} font-sans antialiased bg-black text-white selection:bg-teal-500 selection:text-white transition-colors duration-500 ease-in-out`}>
+      <body className={`${inter.variable} font-sans antialiased bg-black text-white selection:bg-teal-500 selection:text-white transition-colors duration-500 ease-in-out overflow-x-hidden w-full max-w-[100vw]`}>
         <SmoothScroll>
           <Navigation />
           <Header />

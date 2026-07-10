@@ -1,72 +1,114 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import { Terminal, Database, Box, Cpu } from 'lucide-react';
 
-const services = [
+const defaultServices = [
   {
-    title: "Data-Driven Marketing",
-    description: "Omnichannel campaigns fueled by predictive analytics. We scale CAC efficiently.",
-    icon: (
-      <svg className="w-8 h-8 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-      </svg>
-    ),
-    colSpan: "md:col-span-2",
+    title: "NEURAL BRANDING",
+    description: "Algorithmic identity design and visual asset generation driven by data.",
+    icon: <Box className="w-8 h-8 text-white" />,
+    colSpan: "md:col-span-1"
   },
   {
-    title: "Web Engineering",
-    description: "Lightning-fast, immersive React/Next.js architectures.",
-    icon: (
-      <svg className="w-8 h-8 text-lime-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
-    ),
-    colSpan: "md:col-span-1",
+    title: "WEBGL ARCHITECTURE",
+    description: "Immersive 3D web experiences pushing the limits of browser performance.",
+    icon: <Cpu className="w-8 h-8 text-white" />,
+    colSpan: "md:col-span-2"
   },
   {
-    title: "Brand Matrix",
-    description: "Cyber-aesthetic visual identities that dominate attention economies.",
-    icon: (
-      <svg className="w-8 h-8 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
-    colSpan: "md:col-span-3",
+    title: "QUANTUM SCALING",
+    description: "High-availability backend infrastructures capable of handling millions of concurrent connections.",
+    icon: <Database className="w-8 h-8 text-white" />,
+    colSpan: "md:col-span-2"
+  },
+  {
+    title: "AI AUTOMATION",
+    description: "Intelligent workflow systems and custom LLM integrations for enterprise.",
+    icon: <Terminal className="w-8 h-8 text-white" />,
+    colSpan: "md:col-span-1"
   }
 ];
 
-export default function Services() {
-  return (
-    <section className="w-full flex items-center justify-center py-10 md:py-24 relative" id="services">
-      <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-24 w-full z-10">
-        <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-10 md:mb-16 text-center text-white">
-          System <span className="text-teal-400">Capabilities</span>
-        </h2>
+export default function Services({ data, isEditable, onUpdate }) {
+  const IconMap = {
+    "Box": <Box className="w-8 h-8 text-white" />,
+    "Cpu": <Cpu className="w-8 h-8 text-white" />,
+    "Database": <Database className="w-8 h-8 text-white" />,
+    "Terminal": <Terminal className="w-8 h-8 text-white" />
+  };
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {services.map((service, index) => (
+  const currentData = data && Array.isArray(data) ? data : defaultServices;
+  const services = currentData.map(s => ({ ...s, iconNode: IconMap[s.icon] || IconMap["Box"] }));
+
+  return (
+    <section className="w-full flex items-center justify-center py-6 md:py-24 relative" id="services">
+      <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-24 w-full z-10">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-black mb-12 tracking-tighter text-white"
+        >
+          CORE <span className="text-teal-400">SERVICES</span>
+        </motion.h2>
+        
+        <div className="flex md:grid flex-nowrap md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-6 md:pb-0 hide-scrollbar">
+          {services.map((service, idx) => (
             <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-              className={`group relative bg-white/5 backdrop-blur-xl border border-white/10 p-8 md:p-14 rounded-[2rem] md:hover:bg-white/10 transition-colors overflow-hidden ${service.colSpan}`}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className={`relative bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 md:p-10 flex flex-col justify-between hover:bg-slate-800/50 transition-colors group w-[85vw] md:w-auto shrink-0 snap-center ${service.colSpan}`}
             >
-              {/* Subtle hover gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-transparent opacity-0 md:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-              
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <div className="mb-8">
-                  {service.icon}
-                </div>
-                <div>
-                  <h3 className="text-3xl font-black mb-4 text-white tracking-tight">{service.title}</h3>
-                  <p className="text-slate-400 text-lg leading-relaxed">{service.description}</p>
-                </div>
+              <div className="mb-8 md:mb-16 text-teal-400">
+                {service.iconNode}
               </div>
+              <div>
+                <h3 
+                  className={`text-xl md:text-2xl font-black mb-4 tracking-tight text-white uppercase ${isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded px-1' : ''}`}
+                  contentEditable={isEditable}
+                  suppressContentEditableWarning={true}
+                  onBlur={(e) => isEditable && onUpdate?.('services', `[${idx}].title`, e.currentTarget.textContent)}
+                >
+                  {service.title}
+                </h3>
+                <p 
+                  className={`text-sm md:text-base text-slate-400 font-medium leading-relaxed ${isEditable ? 'cursor-text outline-none hover:bg-white/5 rounded p-1' : ''}`}
+                  contentEditable={isEditable}
+                  suppressContentEditableWarning={true}
+                  onBlur={(e) => isEditable && onUpdate?.('services', `[${idx}].description`, e.currentTarget.textContent)}
+                >
+                  {service.description}
+                </p>
+              </div>
+              
+              {isEditable && (
+                <button 
+                  onClick={() => {
+                    const newArr = [...currentData];
+                    newArr.splice(idx, 1);
+                    onUpdate?.('services', 'full_array', newArr);
+                  }}
+                  className="absolute top-4 right-4 bg-red-500/20 text-red-400 px-2 py-1 text-xs rounded uppercase font-bold hover:bg-red-500/40"
+                >
+                  Delete
+                </button>
+              )}
             </motion.div>
           ))}
+          
+          {isEditable && (
+            <div className="flex items-center justify-center min-w-[300px] border-2 border-dashed border-teal-500/30 rounded-xl hover:bg-teal-500/10 cursor-pointer transition-colors"
+                 onClick={() => {
+                   const template = { title: "NEW SERVICE", description: "Description here.", icon: "Box", colSpan: "md:col-span-1" };
+                   onUpdate?.('services', 'full_array', [...currentData, template]);
+                 }}>
+              <span className="text-teal-400 font-bold uppercase tracking-widest">+ Add Service</span>
+            </div>
+          )}
         </div>
       </div>
     </section>

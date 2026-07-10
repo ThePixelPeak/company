@@ -13,10 +13,12 @@
     "@react-three/drei": "^9.105.6",
     "@react-three/fiber": "^8.16.2",
     "@studio-freight/lenis": "^1.0.42",
+    "appwrite": "^26.1.0",
     "framer-motion": "^11.2.4",
     "gsap": "^3.12.5",
     "lucide-react": "^0.378.0",
     "next": "^14.2.35",
+    "node-appwrite": "^26.2.0",
     "react": "^18",
     "react-dom": "^18",
     "three": "^0.164.0"

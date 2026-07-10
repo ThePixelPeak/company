@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { databases, DB_ID, COLLECTION_ID } from '@/lib/appwrite';
 
 // Simple SVG icon for WhatsApp to avoid extra icon library bloat for one icon
 const WhatsAppIcon = () => (
@@ -12,6 +13,23 @@ const WhatsAppIcon = () => (
 
 export default function WhatsAppButton() {
   const [isHovered, setIsHovered] = useState(false);
+  const [whatsapp, setWhatsapp] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const doc = await databases.getDocument(DB_ID, COLLECTION_ID, 'whatsapp');
+        setWhatsapp(JSON.parse(doc.data));
+      } catch (err) {
+        console.error("WhatsApp fetch error", err);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const phone = whatsapp?.phone || '1234567890';
+  const message = whatsapp?.message || "Hi Pixelpeak! I'd like to scale my brand.";
+  const href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
   return (
     <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 flex items-center justify-end">
@@ -30,7 +48,7 @@ export default function WhatsAppButton() {
       </AnimatePresence>
       
       <motion.a
-        href="https://wa.me/1234567890?text=Hi%20Pixelpeak!%20I'd%20like%20to%20scale%20my%20brand."
+        href={href}
         target="_blank"
         rel="noopener noreferrer"
         onMouseEnter={() => setIsHovered(true)}

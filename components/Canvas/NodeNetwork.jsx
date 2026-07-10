@@ -18,8 +18,8 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
   // Load the logo texture
   const logoTexture = useLoader(THREE.TextureLoader, '/logo.png');
 
-  // Generate 4,000 instances (dense enough for a ball, performant enough for JS looping)
-  const particleCount = 4000;
+  // Reduce instances on mobile for extreme performance gain
+  const particleCount = isMobile ? 1200 : 4000;
   
   const { positions, randomRotations, spinSpeeds } = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
@@ -44,7 +44,7 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
       speeds[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
     }
     return { positions: pos, randomRotations: rot, spinSpeeds: speeds };
-  }, []);
+  }, [particleCount]);
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -150,6 +150,10 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
         duration: 1
       }, 0);
       
+      // Force ScrollTrigger to recalculate metrics during the initial load sequence
+      // This ensures it adapts perfectly when the loading screen unmounts and the page height expands
+      const refreshInterval = setInterval(() => ScrollTrigger.refresh(), 500);
+      setTimeout(() => clearInterval(refreshInterval), 3000);
     });
 
     return () => ctx.revert();

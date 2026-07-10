@@ -61,11 +61,13 @@ const projects = [
   }
 ];
 
-export default function Projects() {
+export default function Projects({ data, isEditable, onUpdate }) {
+  const currentProjects = data && Array.isArray(data) ? data : projects;
+
   return (
-    <section className="w-full py-10 md:py-24 relative overflow-hidden" id="projects">
+    <section className="w-full py-6 md:py-24 relative overflow-hidden" id="projects">
       {/* Decorative vector meshes */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-teal-500/5 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] max-w-[800px] h-[150vw] max-h-[800px] bg-teal-500/5 rounded-full blur-[160px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-24 w-full relative z-10">
         <div className="text-center mb-20">
@@ -84,7 +86,7 @@ export default function Projects() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl md:text-7xl font-black tracking-tighter text-white"
+            className="text-[clamp(2rem,6vw,4.5rem)] font-black tracking-tighter text-white"
           >
             Systems <span className="text-gradient">Portfolio</span>
           </motion.h2>
@@ -100,23 +102,34 @@ export default function Projects() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
-              className="relative w-full h-[300px] group [perspective:1200px]"
-            >
-              {/* Outer standard anchor for click redirect */}
-              <a 
-                href={project.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="block w-full h-full"
+        <div className="flex justify-end mb-2 md:hidden">
+          <span className="text-[10px] text-teal-400 font-mono tracking-wider animate-pulse flex items-center gap-1.5">
+            SWIPE PROJECTS 
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </span>
+        </div>
+
+        <div className="flex flex-row md:grid md:grid-cols-2 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory gap-6 md:gap-8 lg:gap-12 pb-6 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] w-full">
+          {currentProjects.map((project, index) => {
+            const Wrapper = isEditable ? 'div' : 'a';
+            const wrapperProps = isEditable ? {} : { href: project.url, target: "_blank", rel: "noopener noreferrer" };
+            
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
+                className="relative w-[85vw] shrink-0 snap-center md:w-full h-[350px] md:h-[300px] group [perspective:1200px]"
               >
+                {/* Outer standard anchor for click redirect */}
+                <Wrapper 
+                  {...wrapperProps}
+                  className="block w-full h-full"
+                >
                 {/* Cuboid Body */}
                 <div 
                   className="relative w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
@@ -136,7 +149,7 @@ export default function Projects() {
                 >
                   {/* Front Face of the Cuboid */}
                   <div 
-                    className={`absolute inset-0 w-full h-full bg-slate-950/80 border border-white/10 rounded-2xl p-8 flex flex-col justify-between transition-colors duration-500 md:${project.borderColor}`}
+                    className={`absolute inset-0 w-full h-full bg-slate-950/80 border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col justify-between transition-colors duration-500 md:${project.borderColor}`}
                     style={{ 
                       backfaceVisibility: 'hidden',
                       transform: 'translateZ(150px)',
@@ -147,7 +160,12 @@ export default function Projects() {
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-30 rounded-2xl pointer-events-none`} />
                     
                     <div className="relative z-10 flex justify-between items-start">
-                      <span className="text-xs font-bold tracking-[0.2em] text-teal-400 bg-teal-500/10 px-3 py-1 rounded-full border border-teal-500/20">
+                      <span 
+                        className={`text-xs font-bold tracking-[0.2em] text-teal-400 bg-teal-500/10 px-3 py-1 rounded-full border border-teal-500/20 ${isEditable ? 'cursor-text' : ''}`}
+                        contentEditable={isEditable}
+                        suppressContentEditableWarning={true}
+                        onBlur={(e) => isEditable && onUpdate?.('projects', `[${index}].category`, e.currentTarget.textContent)}
+                      >
                         {project.category}
                       </span>
                       <span className="text-slate-500 text-xs font-mono font-semibold">
@@ -156,10 +174,20 @@ export default function Projects() {
                     </div>
 
                     <div className="relative z-10 my-4">
-                      <h3 className="text-3xl font-black text-white tracking-tight mb-3">
+                      <h3 
+                        className={`text-[clamp(1.5rem,5vw,1.875rem)] font-black text-white tracking-tight mb-3 ${isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded px-1' : ''}`}
+                        contentEditable={isEditable}
+                        suppressContentEditableWarning={true}
+                        onBlur={(e) => isEditable && onUpdate?.('projects', `[${index}].title`, e.currentTarget.textContent)}
+                      >
                         {project.title}
                       </h3>
-                      <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-sm">
+                      <p 
+                        className={`text-slate-400 text-sm md:text-base leading-relaxed max-w-sm ${isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded px-1' : ''}`}
+                        contentEditable={isEditable}
+                        suppressContentEditableWarning={true}
+                        onBlur={(e) => isEditable && onUpdate?.('projects', `[${index}].description`, e.currentTarget.textContent)}
+                      >
                         {project.description}
                       </p>
                     </div>
@@ -175,7 +203,7 @@ export default function Projects() {
 
                   {/* Bottom Face of the Cuboid (Glow/Preview face) */}
                   <div 
-                    className="absolute inset-0 w-full h-full bg-slate-900 border-2 border-teal-500/40 rounded-2xl p-6 flex flex-col justify-between shadow-[0_0_40px_rgba(45,212,191,0.15)]"
+                    className="absolute inset-0 w-full h-full bg-slate-900 border-2 border-teal-500/40 rounded-2xl p-5 md:p-6 flex flex-col justify-between shadow-[0_0_40px_rgba(45,212,191,0.15)]"
                     style={{ 
                       backfaceVisibility: 'hidden',
                       transform: 'rotateX(-90deg) translateZ(150px)',
@@ -205,7 +233,7 @@ export default function Projects() {
                     </div>
 
                     <div className="flex items-center justify-between pt-3 border-t border-white/5">
-                      <span className="text-xs text-slate-400 font-medium">Click to initialize connection</span>
+                      <span className="text-[10px] md:text-xs text-slate-400 font-medium">Click to initialize connection</span>
                       <span className="text-xs font-bold text-slate-900 bg-gradient-accent px-4 py-1.5 rounded-lg flex items-center gap-1.5 hover:scale-105 transition-transform">
                         ACCESS SOURCE
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -214,10 +242,42 @@ export default function Projects() {
                       </span>
                     </div>
                   </div>
+                  {isEditable && (
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const newArr = [...currentProjects];
+                        newArr.splice(index, 1);
+                        onUpdate?.('projects', 'full_array', newArr);
+                      }}
+                      className="absolute top-2 right-2 bg-red-500/20 text-red-400 px-2 py-1 text-xs rounded uppercase font-bold hover:bg-red-500/40 z-50"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
-              </a>
+              </Wrapper>
             </motion.div>
-          ))}
+            );
+          })}
+          
+          {isEditable && (
+            <div className="flex items-center justify-center min-w-[300px] md:w-full border-2 border-dashed border-teal-500/30 rounded-xl hover:bg-teal-500/10 cursor-pointer transition-colors p-6 h-[350px] md:h-[300px]"
+                 onClick={() => {
+                   const template = { 
+                     title: "NEW PROJECT", 
+                     category: "CATEGORY", 
+                     description: "Description here.", 
+                     metrics: [{name: "METRIC", value: "100"}], 
+                     tech: ["Tech"],
+                     color: "from-slate-500/20 to-slate-900/10",
+                     borderColor: "group-hover:border-slate-500/50"
+                   };
+                   onUpdate?.('projects', 'full_array', [...currentProjects, template]);
+                 }}>
+              <span className="text-teal-400 font-bold uppercase tracking-widest">+ Add Project</span>
+            </div>
+          )}
         </div>
       </div>
     </section>
