@@ -4,6 +4,7 @@ import WhatsAppButton from '@/components/UI/WhatsAppButton';
 import Header from '@/components/UI/Header';
 import SmoothScroll from '@/components/UI/SmoothScroll';
 import Navigation from '@/components/UI/Navigation';
+import Cursor from '@/components/UI/Cursor';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -19,6 +20,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} font-sans antialiased bg-black text-white selection:bg-teal-500 selection:text-white transition-colors duration-500 ease-in-out overflow-x-hidden w-full max-w-[100vw]`}>
+        <div className="noise-overlay" />
+        <Cursor />
         <SmoothScroll>
           <Navigation />
           <Header />

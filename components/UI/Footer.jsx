@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Twitter, Linkedin, Instagram, Github } from 'lucide-react';
+import Magnetic from './Magnetic';
 
 export default function Footer({ socials, whatsapp, isEditable, onUpdate }) {
   const socialLinks = [
@@ -51,16 +52,17 @@ export default function Footer({ socials, whatsapp, isEditable, onUpdate }) {
             </div>
           ) : (
             socialLinks.map((link) => (
-              <motion.a
-                key={link.id}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                className="text-slate-500 hover:text-teal-400 transition-colors"
-              >
-                {link.icon}
-              </motion.a>
+              <Magnetic key={link.id}>
+                <motion.a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.2, rotate: 5 }}
+                  className="text-slate-500 hover:text-teal-400 transition-colors inline-block"
+                >
+                  {link.icon}
+                </motion.a>
+              </Magnetic>
             ))
           )}
         </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import Magnetic from './Magnetic';
 
 export default function Contact({ setFormInteracted }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,41 +69,43 @@ export default function Contact({ setFormInteracted }) {
               
               <div className="relative mb-6">
                 <input onFocus={() => setFormInteracted(true)} required type="text" id="name" name="name" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-all placeholder-transparent" placeholder="Name" />
-                <label htmlFor="name" className="absolute left-4 top-4 text-slate-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Name</label>
+                <label htmlFor="name" className="absolute left-4 -top-2 text-slate-500 text-xs bg-black transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Name</label>
               </div>
 
               <div className="relative mb-6">
                 <input onFocus={() => setFormInteracted(true)} required type="email" id="email" name="email" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-all placeholder-transparent" placeholder="Email" />
-                <label htmlFor="email" className="absolute left-4 top-4 text-slate-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Email</label>
+                <label htmlFor="email" className="absolute left-4 -top-2 text-slate-500 text-xs bg-black transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Email</label>
               </div>
 
               <div className="relative mb-6">
                 <input onFocus={() => setFormInteracted?.(true)} required type="tel" id="phone" name="phone" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-all placeholder-transparent" placeholder="Phone" />
-                <label htmlFor="phone" className="absolute left-4 top-4 text-slate-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Phone Number</label>
+                <label htmlFor="phone" className="absolute left-4 -top-2 text-slate-500 text-xs bg-black transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Phone Number</label>
               </div>
 
               <div className="relative mb-8">
                 <textarea onFocus={() => setFormInteracted(true)} id="message" name="message" rows="4" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500 transition-all resize-none placeholder-transparent" placeholder="Message"></textarea>
-                <label htmlFor="message" className="absolute left-4 top-4 text-slate-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-lime-400 peer-focus:bg-black px-1 rounded font-medium">Message</label>
+                <label htmlFor="message" className="absolute left-4 -top-2 text-slate-500 text-xs bg-black transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-placeholder-shown:bg-transparent peer-focus:-top-2 peer-focus:text-xs peer-focus:text-lime-400 peer-focus:bg-black px-1 rounded font-medium">Message</label>
               </div>
 
-              <motion.button 
-                onFocus={() => setFormInteracted(true)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                disabled={isSubmitting}
-                type="submit" 
-                className="relative w-full bg-white text-black font-black tracking-widest uppercase text-sm py-4 rounded-xl hover:bg-slate-200 transition-all flex justify-center items-center overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.2)]"
-              >
-                {isSubmitting ? (
-                  <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                ) : (
-                  "Transmit"
-                )}
-              </motion.button>
+              <Magnetic className="w-full">
+                <motion.button 
+                  onFocus={() => setFormInteracted(true)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={isSubmitting}
+                  type="submit" 
+                  className="relative w-full bg-white text-black font-black tracking-widest uppercase text-sm py-4 rounded-xl hover:bg-slate-200 transition-all flex justify-center items-center overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                >
+                  {isSubmitting ? (
+                    <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    "Transmit"
+                  )}
+                </motion.button>
+              </Magnetic>
             </form>
           )}
         </div>

@@ -13,13 +13,14 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
   const floatRef = useRef();
   const meshRef = useRef();
   const materialRef = useRef();
+  const scrollProgressRef = useRef(0);
   const { camera } = useThree();
   
   // Load the logo texture
   const logoTexture = useLoader(THREE.TextureLoader, '/logo.png');
 
   // Reduce instances on mobile for extreme performance gain
-  const particleCount = isMobile ? 1200 : 4000;
+  const particleCount = isMobile ? 800 : 2000;
   
   const { positions, randomRotations, spinSpeeds } = useMemo(() => {
     const pos = new Float32Array(particleCount * 3);
@@ -51,7 +52,7 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
   // Set initial positions and handle continuous floating/spinning
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
-    const scrollProgress = document.documentElement.scrollTop / (document.documentElement.scrollHeight - window.innerHeight);
+    const scrollProgress = scrollProgressRef.current;
     
     // Float the entire group
     if (scrollProgress < 0.9 && floatRef.current) {
@@ -107,6 +108,7 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
           end: "bottom bottom",
           scrub: 1,
           onUpdate: (self) => {
+            scrollProgressRef.current = self.progress;
             // Re-appear if scrolling back up
             if (self.progress < 0.8 && formInteracted) {
               setFormInteracted(false);
