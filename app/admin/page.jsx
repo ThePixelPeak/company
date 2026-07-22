@@ -12,6 +12,7 @@ import Reviews from '@/components/UI/Reviews';
 import Contact from '@/components/UI/Contact';
 import Footer from '@/components/UI/Footer';
 import { databases, account, DB_ID, COLLECTION_ID } from '@/lib/appwrite';
+import { ID } from 'appwrite';
 
 const Divider = () => (
   <div className="w-full flex justify-center py-2 md:py-4 opacity-50 relative z-10 pointer-events-none">
@@ -111,12 +112,19 @@ export default function AdminDashboard() {
     try {
       const promises = Object.keys(cmsData).map(section => {
         const docId = documentMap[section];
+        const dataStr = JSON.stringify(cmsData[section] || {});
         if (docId) {
           return databases.updateDocument(DB_ID, COLLECTION_ID, docId, {
-            data: JSON.stringify(cmsData[section])
+            data: dataStr
+          });
+        } else {
+          return databases.createDocument(DB_ID, COLLECTION_ID, ID.unique(), {
+            section: section,
+            data: dataStr
+          }).then(doc => {
+            setDocumentMap(prev => ({ ...prev, [section]: doc.$id }));
           });
         }
-        return Promise.resolve();
       });
       await Promise.all(promises);
       setSaveStatus('All changes saved!');
@@ -251,7 +259,7 @@ export default function AdminDashboard() {
         <Divider />
         <Contact setFormInteracted={setFormInteracted} />
       </div>
-      <Footer socials={cmsData.socials} />
+      <Footer socials={cmsData.socials} whatsapp={cmsData.whatsapp} isEditable={true} onUpdate={handleUpdate} />
     </main>
   );
 }

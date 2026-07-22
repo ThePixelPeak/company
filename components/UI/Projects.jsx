@@ -123,7 +123,7 @@ export default function Projects({ data, isEditable, onUpdate }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
-                className="relative w-[85vw] shrink-0 snap-center md:w-full h-[350px] md:h-[300px] group [perspective:1200px]"
+                className={`relative w-[85vw] shrink-0 snap-center md:w-full group [perspective:1200px] ${isEditable ? 'h-[500px] md:h-[450px]' : 'h-[350px] md:h-[300px]'}`}
               >
                 {/* Outer standard anchor for click redirect */}
                 <Wrapper 
@@ -137,12 +137,12 @@ export default function Projects({ data, isEditable, onUpdate }) {
                     transformStyle: 'preserve-3d',
                   }}
                   onMouseEnter={(e) => {
-                    if (window.innerWidth < 768) return;
+                    if (isEditable || window.innerWidth < 768) return;
                     const inner = e.currentTarget;
                     inner.style.transform = 'rotateX(90deg)';
                   }}
                   onMouseLeave={(e) => {
-                    if (window.innerWidth < 768) return;
+                    if (isEditable || window.innerWidth < 768) return;
                     const inner = e.currentTarget;
                     inner.style.transform = 'rotateX(0deg)';
                   }}
@@ -192,12 +192,77 @@ export default function Projects({ data, isEditable, onUpdate }) {
                       </p>
                     </div>
 
-                    <div className="relative z-10 flex gap-2 flex-wrap">
-                      {project.tech.map((t, idx) => (
-                        <span key={idx} className="text-[10px] font-mono text-slate-500 border border-slate-800 bg-black/40 px-2 py-0.5 rounded">
-                          {t}
-                        </span>
-                      ))}
+                    <div className="relative z-10 flex flex-col gap-2">
+                      {isEditable ? (
+                        <div
+                          className="text-[10px] font-mono text-slate-400 border border-slate-700 bg-black/40 px-2 py-1 rounded w-full cursor-text outline-none"
+                          contentEditable={true}
+                          suppressContentEditableWarning={true}
+                          onBlur={(e) => {
+                            const val = e.currentTarget.textContent;
+                            const arr = val.split(',').map(s => s.trim()).filter(Boolean);
+                            onUpdate?.('projects', `[${index}].tech`, arr);
+                          }}
+                        >
+                          {project.tech?.join(', ')}
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 flex-wrap">
+                          {project.tech?.map((t, idx) => (
+                            <span key={idx} className="text-[10px] font-mono text-slate-500 border border-slate-800 bg-black/40 px-2 py-0.5 rounded">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {isEditable && (
+                        <>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs text-teal-500 font-mono">LINK:</span>
+                            <span
+                              className="text-xs text-teal-400 border border-teal-500/30 bg-teal-500/10 px-2 py-0.5 rounded cursor-text flex-grow outline-none truncate max-w-[200px]"
+                              contentEditable={true}
+                              suppressContentEditableWarning={true}
+                              onBlur={(e) => onUpdate?.('projects', `[${index}].url`, e.currentTarget.textContent)}
+                            >
+                              {project.url || "https://"}
+                            </span>
+                          </div>
+                          <div className="flex flex-col gap-1 mt-1 pt-1 border-t border-white/10">
+                            <span className="text-[10px] text-teal-500 font-mono">METRICS:</span>
+                            <div className="grid grid-cols-3 gap-1">
+                              {project.metrics?.map((metric, idx) => (
+                                <div key={idx} className="bg-black/40 border border-slate-700/50 rounded p-1 flex flex-col gap-1">
+                                  <span
+                                    className="text-[9px] text-slate-400 font-mono cursor-text outline-none bg-white/5 px-1 rounded truncate"
+                                    contentEditable={true}
+                                    suppressContentEditableWarning={true}
+                                    onBlur={(e) => {
+                                      const newMetrics = [...(project.metrics || [])];
+                                      newMetrics[idx] = { ...newMetrics[idx], name: e.currentTarget.textContent };
+                                      onUpdate?.('projects', `[${index}].metrics`, newMetrics);
+                                    }}
+                                  >
+                                    {metric.name}
+                                  </span>
+                                  <span
+                                    className="text-[10px] font-bold text-white font-mono cursor-text outline-none bg-white/5 px-1 rounded truncate"
+                                    contentEditable={true}
+                                    suppressContentEditableWarning={true}
+                                    onBlur={(e) => {
+                                      const newMetrics = [...(project.metrics || [])];
+                                      newMetrics[idx] = { ...newMetrics[idx], value: e.currentTarget.textContent };
+                                      onUpdate?.('projects', `[${index}].metrics`, newMetrics);
+                                    }}
+                                  >
+                                    {metric.value}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -245,12 +310,14 @@ export default function Projects({ data, isEditable, onUpdate }) {
                   {isEditable && (
                     <button 
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         const newArr = [...currentProjects];
                         newArr.splice(index, 1);
                         onUpdate?.('projects', 'full_array', newArr);
                       }}
-                      className="absolute top-2 right-2 bg-red-500/20 text-red-400 px-2 py-1 text-xs rounded uppercase font-bold hover:bg-red-500/40 z-50"
+                      className="absolute top-4 right-4 bg-red-500/20 text-red-400 px-3 py-1.5 text-xs rounded uppercase font-bold hover:bg-red-500/40 z-50 shadow-lg"
+                      style={{ transform: 'translateZ(151px)' }}
                     >
                       Delete
                     </button>
@@ -262,7 +329,7 @@ export default function Projects({ data, isEditable, onUpdate }) {
           })}
           
           {isEditable && (
-            <div className="flex items-center justify-center min-w-[300px] md:w-full border-2 border-dashed border-teal-500/30 rounded-xl hover:bg-teal-500/10 cursor-pointer transition-colors p-6 h-[350px] md:h-[300px]"
+            <div className="flex items-center justify-center min-w-[300px] md:w-full border-2 border-dashed border-teal-500/30 rounded-xl hover:bg-teal-500/10 cursor-pointer transition-colors p-6 h-[500px] md:h-[450px]"
                  onClick={() => {
                    const template = { 
                      title: "NEW PROJECT", 
@@ -271,7 +338,8 @@ export default function Projects({ data, isEditable, onUpdate }) {
                      metrics: [{name: "METRIC", value: "100"}], 
                      tech: ["Tech"],
                      color: "from-slate-500/20 to-slate-900/10",
-                     borderColor: "group-hover:border-slate-500/50"
+                     borderColor: "group-hover:border-slate-500/50",
+                     url: "https://"
                    };
                    onUpdate?.('projects', 'full_array', [...currentProjects, template]);
                  }}>

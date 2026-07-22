@@ -89,14 +89,26 @@ export default function Statistics({ data, isEditable, onUpdate }) {
             >
               <div className="flex items-center text-[clamp(2.5rem,8vw,6rem)] font-black text-white tracking-tighter mb-2">
                 <span 
-                  className={isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded' : ''}
+                  className={`text-[0.5em] ${isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded' : ''}`}
                   contentEditable={isEditable}
                   suppressContentEditableWarning={true}
                   onBlur={(e) => isEditable && onUpdate?.('statistics', `[${index}].prefix`, e.currentTarget.textContent)}
                 >{stat.prefix}</span>
-                <AnimatedCounter value={stat.value} prefix="" suffix="" />
+                {isEditable ? (
+                  <span 
+                    className="cursor-text outline-none hover:bg-white/10 rounded"
+                    contentEditable={true}
+                    suppressContentEditableWarning={true}
+                    onBlur={(e) => {
+                      const num = Number(e.currentTarget.textContent.replace(/[^0-9.-]+/g,""));
+                      if (!isNaN(num)) onUpdate?.('statistics', `[${index}].value`, num);
+                    }}
+                  >{stat.value}</span>
+                ) : (
+                  <AnimatedCounter value={stat.value} prefix="" suffix="" />
+                )}
                 <span 
-                  className={isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded' : ''}
+                  className={`text-[0.5em] ${isEditable ? 'cursor-text outline-none hover:bg-white/10 rounded' : ''}`}
                   contentEditable={isEditable}
                   suppressContentEditableWarning={true}
                   onBlur={(e) => isEditable && onUpdate?.('statistics', `[${index}].suffix`, e.currentTarget.textContent)}
