@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { name: 'Home', href: '#hero' },
@@ -13,7 +14,10 @@ const navLinks = [
 ];
 
 export default function Navigation() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  if (pathname?.startsWith('/admin')) return null;
 
   const handleScroll = (e, href) => {
     e.preventDefault();

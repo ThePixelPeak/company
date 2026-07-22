@@ -1,6 +1,12 @@
+"use client";
+
 import React from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <header className="fixed top-0 left-0 w-full p-6 z-50 pointer-events-none flex items-center justify-between">
       <div className="flex items-center gap-3 pointer-events-auto cursor-pointer" id="logo-container">

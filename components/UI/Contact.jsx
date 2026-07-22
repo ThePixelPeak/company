@@ -77,12 +77,12 @@ export default function Contact({ setFormInteracted }) {
               </div>
 
               <div className="relative mb-6">
-                <input onFocus={() => setFormInteracted?.(true)} type="tel" id="phone" name="phone" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-all placeholder-transparent" placeholder="Phone" />
+                <input onFocus={() => setFormInteracted?.(true)} required type="tel" id="phone" name="phone" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500 transition-all placeholder-transparent" placeholder="Phone" />
                 <label htmlFor="phone" className="absolute left-4 top-4 text-slate-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-teal-400 peer-focus:bg-black px-1 rounded font-medium">Phone Number</label>
               </div>
 
               <div className="relative mb-8">
-                <textarea onFocus={() => setFormInteracted(true)} required id="message" name="message" rows="4" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500 transition-all resize-none placeholder-transparent" placeholder="Message"></textarea>
+                <textarea onFocus={() => setFormInteracted(true)} id="message" name="message" rows="4" className="peer w-full bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:ring-1 focus:ring-lime-500 focus:border-lime-500 transition-all resize-none placeholder-transparent" placeholder="Message"></textarea>
                 <label htmlFor="message" className="absolute left-4 top-4 text-slate-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-4 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-lime-400 peer-focus:bg-black px-1 rounded font-medium">Message</label>
               </div>
 
