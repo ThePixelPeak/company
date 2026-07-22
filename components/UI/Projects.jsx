@@ -111,7 +111,7 @@ export default function Projects({ data, isEditable, onUpdate }) {
           </span>
         </div>
 
-        <div className="flex flex-row md:grid md:grid-cols-2 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory gap-6 md:gap-8 lg:gap-12 pb-6 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] w-full">
+        <div className="flex flex-row md:grid md:grid-cols-2 overflow-x-auto overflow-y-hidden md:overflow-x-visible md:overflow-y-visible snap-x snap-mandatory gap-6 md:gap-8 lg:gap-12 pb-6 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] w-full touch-pan-y">
           {currentProjects.map((project, index) => {
             const Wrapper = isEditable ? 'div' : 'a';
             const wrapperProps = isEditable ? {} : { href: project.url, target: "_blank", rel: "noopener noreferrer" };

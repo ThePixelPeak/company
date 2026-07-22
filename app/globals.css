@@ -82,3 +82,17 @@ html.lenis {
 body.custom-cursor-active, body.custom-cursor-active * {
   cursor: none !important;
 }
+
+/* Fix Browser Autofill White Background on Dark Theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #020617 inset !important; /* slate-950 equivalent */
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+}
