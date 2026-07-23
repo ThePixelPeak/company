@@ -95,7 +95,7 @@ export default function Reviews({ data, isEditable, onUpdate }) {
           </span>
         </div>
 
-        <div className="flex flex-row md:grid md:grid-cols-2 overflow-x-auto overflow-y-hidden md:overflow-x-visible md:overflow-y-visible snap-x snap-mandatory gap-4 md:gap-6 lg:gap-8 pb-6 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] w-full touch-pan-y">
+        <div className="flex flex-row md:grid md:grid-cols-2 overflow-x-auto overflow-y-hidden md:overflow-x-visible md:overflow-y-visible snap-x snap-mandatory gap-4 md:gap-6 lg:gap-8 pb-6 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] w-full">
           {currentReviews.map((review, index) => (
             <motion.div
               key={index}
