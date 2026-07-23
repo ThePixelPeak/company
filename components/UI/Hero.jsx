@@ -5,7 +5,7 @@ import MagneticButton from './MagneticButton';
 
 export default function Hero({ data, isEditable, onUpdate }) {
   return (
-    <section className="w-full relative overflow-hidden min-h-screen flex items-center pt-8" id="hero">
+    <section className="w-full relative overflow-hidden min-h-[85vh] md:min-h-screen flex items-center pt-24 md:pt-8 pb-12 md:pb-0" id="hero">
       {/* Decorative gradient orb for richer background */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 -translate-x-1/2 w-[150vw] max-w-[600px] h-[150vw] max-h-[600px] bg-teal-500/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[120vw] max-w-[500px] h-[120vw] max-h-[500px] bg-lime-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -65,13 +65,13 @@ export default function Hero({ data, isEditable, onUpdate }) {
               const target = document.querySelector('#contact');
               if (target) {
                 if (window.lenis) {
-                  window.lenis.scrollTo(target, { duration: 1.2 });
+                  window.lenis.scrollTo(target, { duration: 0.5 });
                 } else {
                   target.scrollIntoView({ behavior: 'smooth' });
                 }
               }
             }}
-            className="px-6 py-4 sm:px-10 sm:py-5 bg-white text-black font-bold tracking-wide md:hover:bg-slate-200 transition-colors w-full sm:w-auto min-h-[44px]"
+            className="px-4 py-2 text-sm sm:text-base sm:px-10 sm:py-5 bg-white text-black font-bold tracking-wide md:hover:bg-slate-200 transition-colors w-[50%] mx-auto sm:mx-0 sm:w-auto min-h-[44px]"
           >
             Initialize Project
           </MagneticButton>

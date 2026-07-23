@@ -100,6 +100,17 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
   }, [formInteracted]);
 
   useLayoutEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    
+    // Set initial placement based on device
+    if (isMobile) {
+      gsapRef.current.position.set(0, 0, 1); // Centered perfectly on mobile
+      gsapRef.current.scale.set(1.8, 1.8, 1.8); // Scaled to cover ~60% of background
+    } else {
+      gsapRef.current.position.set(2.5, -0.5, 0); // Original desktop placement
+      gsapRef.current.scale.set(1, 1, 1); // Original desktop scale
+    }
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -126,20 +137,20 @@ export default function NodeNetwork({ formInteracted, setFormInteracted, isMobil
         duration: 1
       }, 0);
 
-      // First part: Move to the left space (About section)
+      // First part: Move to the left space (About section) on desktop, keep centered on mobile
       tl.to(gsapRef.current.position, {
-        x: -3.5,
-        z: 3, 
-        y: 0,
+        x: isMobile ? 0 : -3.5,
+        z: isMobile ? 2.5 : 3, 
+        y: isMobile ? -2 : 0,
         ease: "power1.inOut",
         duration: 0.4
       }, 0);
 
       // Second part: Move to center bottom (Contact section)
       tl.to(gsapRef.current.position, {
-        x: 0,
-        z: 7.5, // Extreme close up at bottom
-        y: -1,
+        x: isMobile ? 0 : 0,
+        z: isMobile ? 5 : 7.5, // Less extreme close up on mobile
+        y: isMobile ? -3 : -1,
         ease: "power1.inOut",
         duration: 0.6
       }, 0.4);
