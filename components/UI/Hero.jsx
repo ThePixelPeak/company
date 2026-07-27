@@ -73,7 +73,7 @@ export default function Hero({ data, isEditable, onUpdate }) {
             }}
             className="px-4 py-2 text-sm sm:text-base sm:px-10 sm:py-5 bg-white text-black font-bold tracking-wide md:hover:bg-slate-200 transition-colors w-[50%] mx-auto sm:mx-0 sm:w-auto min-h-[44px]"
           >
-            Initialize Project
+            Start a Project
           </MagneticButton>
         </motion.div>
       </div>
