@@ -39,7 +39,7 @@ export default function Process({ data, isEditable, onUpdate }) {
             The <span className="text-gradient">Algorithm</span>
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto font-medium">
-            A proven methodology turning cold traffic into loyal brand advocates.
+            From idea to impact.
           </p>
         </div>
 
